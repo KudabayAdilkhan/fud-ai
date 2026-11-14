@@ -21,7 +21,8 @@ concurrency:
 
 jobs:
   build:
-    runs-on: macos-26
+    # GitHub-hosted preview image with Xcode 27 (the app needs the iOS 27 SDK).
+    runs-on: xcode-27
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
