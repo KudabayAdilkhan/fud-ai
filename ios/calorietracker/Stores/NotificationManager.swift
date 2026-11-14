@@ -11,7 +11,7 @@ import UserNotifications
 /// reminder switched off just before the app is closed is still cancelled.
 nonisolated enum PendingNotificationRequests {
     private static let queue = DispatchQueue(
-        label: "com.apoorvdarshan.calorietracker.pending-notification-requests",
+        label: "kz.kudabay.tamaq.pending-notification-requests",
         qos: .utility
     )
 

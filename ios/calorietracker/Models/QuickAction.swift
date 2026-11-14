@@ -92,7 +92,7 @@ extension Notification.Name {
 
 enum QuickActionCoordinator {
     private static let pendingKey = "quickAction.pending"
-    private static let shortcutPrefix = "com.apoorvdarshan.calorietracker.quickAction."
+    private static let shortcutPrefix = "kz.kudabay.tamaq.quickAction."
 
     static func shortcutType(for slot: Int) -> String { shortcutPrefix + String(slot + 1) }
 

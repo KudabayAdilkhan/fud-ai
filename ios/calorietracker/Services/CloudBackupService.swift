@@ -18,7 +18,7 @@ final class CloudBackupService {
     private static let legacyArchiveName = "fudai-backup.zip"
     /// Temp archives a backup in this process is still packing or uploading.
     private static var activeArchiveNames: Set<String> = []
-    private static let smokeLogger = Logger(subsystem: "com.apoorvdarshan.calorietracker", category: "CloudBackupSmoke")
+    private static let smokeLogger = Logger(subsystem: "kz.kudabay.tamaq", category: "CloudBackupSmoke")
 
     private let recordType = "FudAIBackup"
     private let recordName = "current"
@@ -149,6 +149,8 @@ final class CloudBackupService {
     }
 
     func checkAccount() async throws {
+        // Without the iCloud entitlement CKContainer.default() traps, so never touch it.
+        guard AppEdition.iCloudBackupEnabled else { throw CloudBackupError.iCloudUnavailable }
         let status = try await container.accountStatus()
         guard status == .available else { throw CloudBackupError.iCloudUnavailable }
     }
@@ -167,6 +169,9 @@ final class CloudBackupService {
     /// asset. Unlike `refreshCloudPresence`, a failed check is reported as
     /// such instead of looking like "no backup".
     func probeForBackup() async -> ProbeResult {
+        guard AppEdition.iCloudBackupEnabled else {
+            return .couldNotCheck(CloudBackupError.iCloudUnavailable.localizedDescription)
+        }
         let status: CKAccountStatus
         do {
             status = try await container.accountStatus()
@@ -300,6 +305,7 @@ final class CloudBackupService {
     func deleteCloudBackup() async throws {
         busy = true
         defer { busy = false }
+        guard AppEdition.iCloudBackupEnabled else { throw CloudBackupError.iCloudUnavailable }
         try await deleteCloudRecord(named: recordName)
     }
 

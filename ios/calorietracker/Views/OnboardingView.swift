@@ -978,7 +978,9 @@ struct OnboardingView: View {
     private var aiProviderSubtitle: String {
         switch aiSubstep {
         case .choice:
-            String(localized: "Choose how you want to power AI in Fud AI. The app stays free either way.")
+            AppEdition.hostedAIEnabled
+                ? String(localized: "Choose how you want to power AI in Fud AI. The app stays free either way.")
+                : String(localized: "Add your own AI provider key — Gemini, OpenAI, Groq, and more are supported.")
         case .byok:
             String(localized: "Add your own AI provider key — Gemini, OpenAI, Groq, and more are supported.")
         case .hosted:
@@ -998,6 +1000,7 @@ struct OnboardingView: View {
                 withAnimation(.snappy) { aiSubstep = .byok }
             }
 
+            if AppEdition.hostedAIEnabled {
             aiChoiceCard(
                 icon: "bolt.horizontal.circle.fill",
                 title: String(localized: "Hosted AI"),
@@ -1011,6 +1014,7 @@ struct OnboardingView: View {
                 if !rc.hasHostedEntitlement {
                     showHostedPaywall = true
                 }
+            }
             }
         }
     }

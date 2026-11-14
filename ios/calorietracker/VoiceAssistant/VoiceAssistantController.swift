@@ -6,7 +6,7 @@ import SwiftUI
 import UIKit
 import os
 
-private let logger = Logger(subsystem: "com.apoorvdarshan.calorietracker", category: "VoiceAssistant")
+private let logger = Logger(subsystem: "kz.kudabay.tamaq", category: "VoiceAssistant")
 
 /// Sheets presented from the assistant's window.
 enum VoiceAssistantSheet: String, Identifiable {

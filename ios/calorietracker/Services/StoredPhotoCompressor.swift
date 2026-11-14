@@ -27,7 +27,7 @@ nonisolated enum StoredPhotoCompressor {
     }
 
     /// Serial queue that downscales newly stored photos off the main actor.
-    static let newPhotoQueue = DispatchQueue(label: "com.apoorvdarshan.calorietracker.new-photo-downscale", qos: .utility)
+    static let newPhotoQueue = DispatchQueue(label: "kz.kudabay.tamaq.new-photo-downscale", qos: .utility)
 
     /// Serializes photo writes and deletes with the compressor's last unchanged-file check and
     /// swap, so a photo saved, restored or deleted mid-compression is never replaced by a copy

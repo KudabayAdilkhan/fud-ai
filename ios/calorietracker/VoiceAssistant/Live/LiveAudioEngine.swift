@@ -2,7 +2,7 @@ import Accelerate
 @preconcurrency import AVFoundation
 import os
 
-nonisolated private let logger = Logger(subsystem: "com.apoorvdarshan.calorietracker", category: "LiveAudio")
+nonisolated private let logger = Logger(subsystem: "kz.kudabay.tamaq", category: "LiveAudio")
 
 /// Output-only audio for Settings previews. This interface cannot open a microphone.
 protocol LivePlaybackIO: AnyObject {

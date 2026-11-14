@@ -20,7 +20,7 @@ enum AIModeSettings {
         set { UserDefaults.standard.set(newValue.rawValue, forKey: modeKey) }
     }
 
-    static var isHosted: Bool { mode == .hosted }
+    static var isHosted: Bool { AppEdition.hostedAIEnabled && mode == .hosted }
 }
 
 /// Hosted quota is enforced by the Worker (see `web/hosted-ai-ledger.ts`): every

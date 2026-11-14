@@ -45,6 +45,11 @@ struct GeminiService {
         var progressiveMeal = false
         var ingredients: [MealIngredient] = []
         var productMetadata: FoodProductMetadata? = nil
+        /// The model's database key for the whole food ("" = keep its numbers,
+        /// nil = it gave none). See `NutritionGrounding`.
+        var lookupName: String? = nil
+        /// One key per entry of `ingredients`, same order.
+        var ingredientLookupNames: [String?] = []
 
         /// When the model also returned a breakdown, the header macros are the sum of that list.
         func withIngredientMacroTotals() -> FoodAnalysis {
@@ -202,11 +207,11 @@ struct GeminiService {
     }
 
     private static let foodAnalysisJSONShape = """
-    {"name":"...","calories":0,"protein":0.0,"carbs":0.0,"fat":0.0,"serving_size_grams":0.0,"emoji":"🍽️","sugar":0.0,"added_sugar":0.0,"fiber":0.0,"saturated_fat":0.0,"monounsaturated_fat":0.0,"polyunsaturated_fat":0.0,"trans_fat":0.0,"cholesterol":0.0,"caffeine":0.0,"creatine":0.0,"beta_alanine":0.0,"l_citrulline":0.0,"l_carnitine":0.0,"l_arginine":0.0,"taurine":0.0,"betaine":0.0,"hmb":0.0,"sodium":0.0,"potassium":0.0,"calcium":0.0,"iron":0.0,"magnesium":0.0,"zinc":0.0,"vitamin_a":0.0,"vitamin_c":0.0,"vitamin_d":0.0,"vitamin_b12":0.0,"vitamin_e":0.0,"vitamin_k":0.0,"folate":0.0,"omega_3":0.0,"ingredients":[],"unit_options":[]}
+    {"name":"...","calories":0,"protein":0.0,"carbs":0.0,"fat":0.0,"serving_size_grams":0.0,"emoji":"🍽️","sugar":0.0,"added_sugar":0.0,"fiber":0.0,"saturated_fat":0.0,"monounsaturated_fat":0.0,"polyunsaturated_fat":0.0,"trans_fat":0.0,"cholesterol":0.0,"caffeine":0.0,"creatine":0.0,"beta_alanine":0.0,"l_citrulline":0.0,"l_carnitine":0.0,"l_arginine":0.0,"taurine":0.0,"betaine":0.0,"hmb":0.0,"sodium":0.0,"potassium":0.0,"calcium":0.0,"iron":0.0,"magnesium":0.0,"zinc":0.0,"vitamin_a":0.0,"vitamin_c":0.0,"vitamin_d":0.0,"vitamin_b12":0.0,"vitamin_e":0.0,"vitamin_k":0.0,"folate":0.0,"omega_3":0.0,"lookup":"","ingredients":[],"unit_options":[]}
     """
 
     private static let foodAnalysisJSONShapeWithoutEmoji = """
-    {"name":"...","calories":0,"protein":0.0,"carbs":0.0,"fat":0.0,"serving_size_grams":0.0,"sugar":0.0,"added_sugar":0.0,"fiber":0.0,"saturated_fat":0.0,"monounsaturated_fat":0.0,"polyunsaturated_fat":0.0,"trans_fat":0.0,"cholesterol":0.0,"caffeine":0.0,"creatine":0.0,"beta_alanine":0.0,"l_citrulline":0.0,"l_carnitine":0.0,"l_arginine":0.0,"taurine":0.0,"betaine":0.0,"hmb":0.0,"sodium":0.0,"potassium":0.0,"calcium":0.0,"iron":0.0,"magnesium":0.0,"zinc":0.0,"vitamin_a":0.0,"vitamin_c":0.0,"vitamin_d":0.0,"vitamin_b12":0.0,"vitamin_e":0.0,"vitamin_k":0.0,"folate":0.0,"omega_3":0.0,"ingredients":[],"unit_options":[]}
+    {"name":"...","calories":0,"protein":0.0,"carbs":0.0,"fat":0.0,"serving_size_grams":0.0,"sugar":0.0,"added_sugar":0.0,"fiber":0.0,"saturated_fat":0.0,"monounsaturated_fat":0.0,"polyunsaturated_fat":0.0,"trans_fat":0.0,"cholesterol":0.0,"caffeine":0.0,"creatine":0.0,"beta_alanine":0.0,"l_citrulline":0.0,"l_carnitine":0.0,"l_arginine":0.0,"taurine":0.0,"betaine":0.0,"hmb":0.0,"sodium":0.0,"potassium":0.0,"calcium":0.0,"iron":0.0,"magnesium":0.0,"zinc":0.0,"vitamin_a":0.0,"vitamin_c":0.0,"vitamin_d":0.0,"vitamin_b12":0.0,"vitamin_e":0.0,"vitamin_k":0.0,"folate":0.0,"omega_3":0.0,"lookup":"","ingredients":[],"unit_options":[]}
     """
 
     private static let nutritionLabelJSONShape = """
@@ -235,8 +240,12 @@ struct GeminiService {
     Never invent a count from the food name or total grams. Only return a countable unit when its quantity is stated in the user's text, visible in the image or label, or strongly implied by the described or visible analyzed portion. Do not assume quantity is 1 merely because the food is commonly sold or served as one piece.
     """
 
-    private static let ingredientBreakdownInstruction = """
-    ingredients is required. For a meal with multiple meaningful foods, return each food once using this exact object shape: {"name":"...","grams":0.0,"calories":0,"protein":0.0,"carbs":0.0,"fat":0.0}. Ingredient grams and macros must describe the analyzed amount and add up approximately to the meal totals. Return [] for a nutrition label, a single simple food, or when a reliable breakdown is not possible. Every ingredient must have a positive grams estimate even when no weight is shown. For screenshots or photos of menus, recipes, meal plans, or food-logging apps that list several dishes, return each listed dish as its own ingredient using its listed calories/macros. Return at most 20 ingredients; when there are more foods or dishes, combine similar or minor ones so the list still covers the whole meal. Never add a total or subtotal row as an ingredient.
+    private static var ingredientBreakdownInstruction: String {
+        baseIngredientBreakdownInstruction + "\n" + NutritionGrounding.promptInstruction
+    }
+
+    private static let baseIngredientBreakdownInstruction = """
+    ingredients is required. For a meal with multiple meaningful foods, return each food once using this exact object shape: {"name":"...","lookup":"","grams":0.0,"calories":0,"protein":0.0,"carbs":0.0,"fat":0.0}. Ingredient grams and macros must describe the analyzed amount and add up approximately to the meal totals. Return [] for a nutrition label, a single simple food, or when a reliable breakdown is not possible. Every ingredient must have a positive grams estimate even when no weight is shown. For screenshots or photos of menus, recipes, meal plans, or food-logging apps that list several dishes, return each listed dish as its own ingredient using its listed calories/macros. Return at most 20 ingredients; when there are more foods or dishes, combine similar or minor ones so the list still covers the whole meal. Never add a total or subtotal row as an ingredient.
     """
 
     // MARK: - Public API (unchanged interface)
@@ -1535,8 +1544,16 @@ struct GeminiService {
             selectedServingQuantity: responseServingSizeGrams == nil ? 1 : selectedOption?.quantity(for: servingSizeGrams),
             servingSizeIsKnown: responseServingSizeGrams != nil,
             requiresServingUnitFallback: parsedUnitOptions.requiresFallback,
-            ingredients: ingredients
+            ingredients: ingredients,
+            lookupName: json["lookup"] as? String,
+            ingredientLookupNames: ingredientLookupNames(json["ingredients"], count: ingredients.count)
         ).withIngredientMacroTotals()
+    }
+
+    /// The `lookup` of each raw ingredient, kept only when every raw entry became an ingredient.
+    private static func ingredientLookupNames(_ raw: Any?, count: Int) -> [String?] {
+        guard count > 0, let items = raw as? [Any], items.count == count else { return [] }
+        return items.map { ($0 as? [String: Any])?["lookup"] as? String }
     }
 
     /// The prompts ask for at most this many entries; a longer list is dropped, never truncated.
@@ -1824,6 +1841,7 @@ struct GeminiService {
         image: UIImage?,
         description: String?
     ) async -> FoodAnalysis {
+        let analysis = await NutritionGrounding.ground(analysis)
         var updated = analysis
         updated.requiresServingUnitFallback = false
         guard ServingUnitRepairPolicy.shouldRepair(analysis) else { return updated }
