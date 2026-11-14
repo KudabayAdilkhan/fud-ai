@@ -1,0 +1,19 @@
+name = "tamaq-bot"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+GEMINI_MODEL = "gemini-3.5-flash"
+# Comma-separated Telegram user IDs allowed to use the bot. Empty = anyone.
+ALLOWED_USERS = ""
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tamaq-bot"
+database_id = "REPLACE_WITH_D1_ID"
+
+# Secrets (set with `npx wrangler secret put NAME`):
+#   TELEGRAM_TOKEN   token from @BotFather
+#   GEMINI_API_KEY   https://aistudio.google.com/apikey
+#   WEBHOOK_SECRET   any random string
+#   USDA_API_KEY     optional, https://fdc.nal.usda.gov/api-key-signup
