@@ -1,0 +1,85 @@
+name: Tamaq build
+
+# Builds the iPhone app on a GitHub macOS runner, so it can be checked and
+# installed without owning a Mac. The IPA is UNSIGNED: install it with a
+# sideloading tool (Sideloadly or AltStore on Windows) that signs it with
+# your own Apple ID.
+on:
+  push:
+    branches: [main, 'adapt/**']
+    paths: ['ios/**', '.github/workflows/tamaq-build.yml']
+  pull_request:
+    paths: ['ios/**', '.github/workflows/tamaq-build.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tamaq-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            ios
+            scripts
+            local-models/legal
+            shared/workout-vectors/exercise-visual-manifest.json
+
+      - name: Select the newest Xcode
+        run: |
+          ls -d /Applications/Xcode*.app
+          newest="$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)"
+          sudo xcode-select -s "$newest/Contents/Developer"
+          xcodebuild -version
+          major="$(xcodebuild -version | awk '/^Xcode /{split($2,v,"."); print v[1]}')"
+          if (( major < 27 )); then
+            echo "::error::This app needs Xcode 27+ (iOS 27 SDK); the runner only has $(xcodebuild -version | head -1)."
+            exit 1
+          fi
+
+      - name: Ensure the Metal shader compiler is available
+        run: bash scripts/ci/ensure_metal_toolchain.sh
+
+      - name: Build unsigned archive
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project ios/calorietracker.xcodeproj \
+            -scheme calorietracker \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/Tamaq.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" \
+            | tee "$RUNNER_TEMP/build.log" | grep -E "error:|warning: .*NutritionGrounding|BUILD|ARCHIVE" || true
+          test -d "$RUNNER_TEMP/Tamaq.xcarchive/Products/Applications"
+
+      - name: Package IPA
+        run: |
+          cd "$RUNNER_TEMP"
+          mkdir -p Payload
+          cp -R Tamaq.xcarchive/Products/Applications/*.app Payload/
+          zip -qry Tamaq-unsigned.ipa Payload
+          ls -lh Tamaq-unsigned.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tamaq-unsigned-ipa
+          path: ${{ runner.temp }}/Tamaq-unsigned.ipa
+          retention-days: 30
+
+      - name: Keep the build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: ${{ runner.temp }}/build.log
+          if-no-files-found: ignore
+          retention-days: 7
