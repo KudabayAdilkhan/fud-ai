@@ -49008,6 +49008,16 @@
         }
       }
     },
+    "Based on Fud AI by Apoorv Darshan (MIT)": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Основано на Fud AI от Apoorv Darshan (MIT)"
+          }
+        }
+      }
+    },
     "Made by Apoorv Darshan": {
       "localizations": {
         "ar": {

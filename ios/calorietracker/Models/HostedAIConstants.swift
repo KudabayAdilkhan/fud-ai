@@ -15,10 +15,10 @@ enum HostedAIConstants {
 
     // MARK: - Subscriptions
 
-    static let plusMonthlyProductID = "com.apoorvdarshan.calorietracker.plus.monthly"
-    static let plusYearlyProductID = "com.apoorvdarshan.calorietracker.plus.yearly"
-    static let proMonthlyProductID = "com.apoorvdarshan.calorietracker.pro.monthly"
-    static let proYearlyProductID = "com.apoorvdarshan.calorietracker.pro.yearly"
+    static let plusMonthlyProductID = "kz.kudabay.tamaq.plus.monthly"
+    static let plusYearlyProductID = "kz.kudabay.tamaq.plus.yearly"
+    static let proMonthlyProductID = "kz.kudabay.tamaq.pro.monthly"
+    static let proYearlyProductID = "kz.kudabay.tamaq.pro.yearly"
 
     static let subscriptionProductIDs: [String] = [
         plusMonthlyProductID,
@@ -29,9 +29,9 @@ enum HostedAIConstants {
 
     // MARK: - Credit packs (consumables)
 
-    static let credits50ProductID = "com.apoorvdarshan.calorietracker.credits.50"
-    static let credits150ProductID = "com.apoorvdarshan.calorietracker.credits.150"
-    static let credits400ProductID = "com.apoorvdarshan.calorietracker.credits.400"
+    static let credits50ProductID = "kz.kudabay.tamaq.credits.50"
+    static let credits150ProductID = "kz.kudabay.tamaq.credits.150"
+    static let credits400ProductID = "kz.kudabay.tamaq.credits.400"
 
     static let creditProductIDs: [String] = [
         credits50ProductID,
@@ -51,10 +51,10 @@ enum HostedAIConstants {
     // MARK: - Tips (iOS — unchanged; see TipJarView.swift)
 
     static let tipProductIDs: [String] = [
-        "com.apoorvdarshan.calorietracker.tip.snack",
-        "com.apoorvdarshan.calorietracker.tip.proteinshake",
-        "com.apoorvdarshan.calorietracker.tip.lunch",
-        "com.apoorvdarshan.calorietracker.tip.feast",
+        "kz.kudabay.tamaq.tip.snack",
+        "kz.kudabay.tamaq.tip.proteinshake",
+        "kz.kudabay.tamaq.tip.lunch",
+        "kz.kudabay.tamaq.tip.feast",
     ]
 
     // MARK: - Daily limits

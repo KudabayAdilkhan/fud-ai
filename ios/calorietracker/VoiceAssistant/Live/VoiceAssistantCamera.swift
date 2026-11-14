@@ -5,7 +5,7 @@ import SwiftUI
 import UIKit
 import os
 
-nonisolated private let logger = Logger(subsystem: "com.apoorvdarshan.calorietracker", category: "VoiceAssistantCamera")
+nonisolated private let logger = Logger(subsystem: "kz.kudabay.tamaq", category: "VoiceAssistantCamera")
 
 nonisolated protocol VoiceAssistantCameraIO: AnyObject, Sendable {
     var session: AVCaptureSession { get }
@@ -52,7 +52,7 @@ nonisolated final class VoiceAssistantCamera: NSObject, VoiceAssistantCameraIO, 
     /// Called on the main queue with each new barcode while in barcode mode.
     var onBarcode: (@Sendable (String) -> Void)?
 
-    private let queue = DispatchQueue(label: "com.apoorvdarshan.calorietracker.voiceassistant.camera")
+    private let queue = DispatchQueue(label: "kz.kudabay.tamaq.voiceassistant.camera")
     private let videoOutput = AVCaptureVideoDataOutput()
     private let metadataOutput = AVCaptureMetadataOutput()
     private let context = CIContext()

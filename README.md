@@ -1,3 +1,12 @@
+> **Tamaq — личная версия Fud AI.** Это форк [apoorvdarshan/fud-ai](https://github.com/apoorvdarshan/fud-ai) (лицензия MIT, автор оригинала — Apoorv Darshan). Изменения в этой версии:
+>
+> - Новое имя **Tamaq** и bundle ID `kz.kudabay.tamaq`; команда разработчика не задана, Xcode попросит выбрать свою.
+> - Скрыты функции, завязанные на серверы и аккаунт автора: платный ИИ Plus/Pro, чаевые, Weekly Challenge, iCloud-бэкап, ссылки на App Store/GitHub/Discord оригинала. Переключатели в `ios/calorietracker/Models/AppEdition.swift`.
+> - **Точнее калории:** ИИ называет блюда и оценивает граммы, а калории и БЖУ берутся из встроенного справочника (`ios/calorietracker/Services/NutritionGrounding.swift`) или из USDA FoodData Central, если в «Настройки → Информация о продукте» добавлен бесплатный ключ USDA.
+> - **Казахские и местные блюда:** плов, бешбармак, манты, баурсаки, лагман, самса, казы, шужук, куырдак, сорпа, курт, кумыс, шубат и другие (30 блюд, значения на 100 г из справочных таблиц).
+>
+> **Как поставить на iPhone:** Mac с Xcode → открыть `ios/calorietracker.xcodeproj` → у каждой цели (calorietracker, FudAIWidgets, calorietrackerShare, часы) во вкладке *Signing & Capabilities* выбрать свою команду (Apple ID) → подключить iPhone → Run. С бесплатным Apple ID приложение нужно переустанавливать раз в 7 дней; если Xcode ругается на HealthKit background delivery, удалите эту возможность в *Signing & Capabilities*.
+
 <p align="center">
   <img src="web/assets/calorie%20logo%20transparent.png" width="120" height="120" alt="Fud AI Logo">
 </p>

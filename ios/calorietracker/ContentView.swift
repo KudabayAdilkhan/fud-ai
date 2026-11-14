@@ -569,7 +569,7 @@ private struct AboutFooterSection: View {
     var body: some View {
         Section {
             VStack(spacing: 4) {
-                Text("Made by Apoorv Darshan")
+                Text("Based on Fud AI by Apoorv Darshan (MIT)")
                     .font(.system(.footnote, design: .rounded, weight: .medium))
                     .foregroundStyle(.secondary)
                 Text("with care, for everyone")
@@ -4195,12 +4195,14 @@ struct ProgressTabView: View {
         let _ = profileStore.profile
         return NavigationStack {
             VStack(spacing: 0) {
-                ProgressOverviewModeSelector(selection: $progressOverviewMode)
-                .padding(.horizontal)
-                .padding(.top, 10)
-                .padding(.bottom, 4)
+                if AppEdition.weeklyChallengeEnabled {
+                    ProgressOverviewModeSelector(selection: $progressOverviewMode)
+                    .padding(.horizontal)
+                    .padding(.top, 10)
+                    .padding(.bottom, 4)
+                }
 
-                if progressOverviewMode == .myProgress {
+                if progressOverviewMode == .myProgress || !AppEdition.weeklyChallengeEnabled {
                     ScrollView {
                         VStack(spacing: 18) {
                     WeeklyRecapCard()
@@ -4589,8 +4591,8 @@ enum ProfileSettingsCategory: String, CaseIterable, Identifiable, Hashable {
     static let preferenceCases: [Self] = [
         .personalInfo,
         .goalsNutrition,
-        .trackingNotifications,
-        .aiAccess,
+        .trackingNotifications
+    ] + (AppEdition.hostedAIEnabled ? [.aiAccess] : []) + [
         .aiProviders,
         .speechToText,
         .voiceAssistant,
@@ -4600,13 +4602,9 @@ enum ProfileSettingsCategory: String, CaseIterable, Identifiable, Hashable {
         .dataManagement
     ]
 
-    static let appInfoCases: [Self] = [
-        .appUpdates,
-        .support,
-        .helpFeedback,
-        .community,
-        .legal
-    ]
+    static let appInfoCases: [Self] = AppEdition.upstreamSupportLinksEnabled
+        ? [.appUpdates, .support, .helpFeedback, .community, .legal]
+        : [.legal]
 
     var id: Self { self }
 
@@ -6425,7 +6423,9 @@ struct ProfileView: View {
                 }
 
                 if settingsCategory == .dataManagement {
-                CloudBackupSettingsSection()
+                if AppEdition.iCloudBackupEnabled {
+                    CloudBackupSettingsSection()
+                }
 
                 Section {
                     // Export Food Diary

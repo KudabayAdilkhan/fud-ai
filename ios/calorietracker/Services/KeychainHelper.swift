@@ -2,7 +2,7 @@ import Foundation
 import Security
 
 struct KeychainHelper {
-    private static let service = "com.apoorvdarshan.calorietracker"
+    private static let service = "kz.kudabay.tamaq"
 
     static func save(key: String, value: String) {
         guard let data = value.data(using: .utf8) else { return }

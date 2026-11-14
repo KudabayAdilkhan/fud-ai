@@ -41,7 +41,7 @@ enum SimulatorTestEnvironment {
         let defaults = UserDefaults.standard
         if CommandLine.arguments.contains("--ui-testing-reset") {
             // Never touch release defaults, shared containers, files, or Keychain.
-            let identifier = "com.apoorvdarshan.calorietracker.debug"
+            let identifier = "kz.kudabay.tamaq.debug"
             precondition(Bundle.main.bundleIdentifier == identifier,
                          "UI test reset requires the dedicated Debug app")
             defaults.removePersistentDomain(forName: identifier)

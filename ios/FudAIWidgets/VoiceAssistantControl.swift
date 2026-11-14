@@ -7,7 +7,7 @@ import WidgetKit
 /// runs it when the app opens.
 @available(iOS 18.0, *)
 struct VoiceAssistantControl: ControlWidget {
-    static let kind = "com.apoorvdarshan.calorietracker.voiceAssistant"
+    static let kind = "kz.kudabay.tamaq.voiceAssistant"
 
     var body: some ControlWidgetConfiguration {
         StaticControlConfiguration(kind: Self.kind) {

@@ -63,7 +63,7 @@ struct WidgetSnapshot: Codable, Equatable {
 
     static var appGroupID: String {
         Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String
-            ?? "group.com.apoorvdarshan.calorietracker"
+            ?? "group.kz.kudabay.tamaq"
     }
 
     static let watchPayloadKey = "widget_snapshot_data_v1"

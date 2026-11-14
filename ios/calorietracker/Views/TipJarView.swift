@@ -20,13 +20,13 @@ final class TipJarStore {
     }
 
     static let tiers: [Tier] = [
-        Tier(productID: "com.apoorvdarshan.calorietracker.tip.snack",
+        Tier(productID: "kz.kudabay.tamaq.tip.snack",
              icon: "tip_snack", name: String(localized: "Snack")),
-        Tier(productID: "com.apoorvdarshan.calorietracker.tip.proteinshake",
+        Tier(productID: "kz.kudabay.tamaq.tip.proteinshake",
              icon: "tip_proteinshake", name: String(localized: "Protein Shake")),
-        Tier(productID: "com.apoorvdarshan.calorietracker.tip.lunch",
+        Tier(productID: "kz.kudabay.tamaq.tip.lunch",
              icon: "tip_lunch", name: String(localized: "Lunch")),
-        Tier(productID: "com.apoorvdarshan.calorietracker.tip.feast",
+        Tier(productID: "kz.kudabay.tamaq.tip.feast",
              icon: "tip_feast", name: String(localized: "Feast"))
     ]
 

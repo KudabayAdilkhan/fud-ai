@@ -1,7 +1,7 @@
 import Foundation
 import os
 
-nonisolated private let logger = Logger(subsystem: "com.apoorvdarshan.calorietracker", category: "LiveSession")
+nonisolated private let logger = Logger(subsystem: "kz.kudabay.tamaq", category: "LiveSession")
 
 /// One live speech-to-speech connection to a provider.
 ///

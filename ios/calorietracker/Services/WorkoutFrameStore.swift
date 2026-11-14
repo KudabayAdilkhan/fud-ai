@@ -35,7 +35,7 @@ actor WorkoutFrameStore {
     nonisolated private static let maxCacheBytes = 256 * 1_024 * 1_024
     nonisolated private static let trimTargetBytes = 192 * 1_024 * 1_024
     nonisolated private static let trimEveryDownloads = 16
-    nonisolated private static let logger = Logger(subsystem: "com.apoorvdarshan.calorietracker", category: "WorkoutFrameStore")
+    nonisolated private static let logger = Logger(subsystem: "kz.kudabay.tamaq", category: "WorkoutFrameStore")
 
     private let baseURL: URL?
     private let cacheDirectory: URL

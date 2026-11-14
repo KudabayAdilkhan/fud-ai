@@ -3,7 +3,7 @@ import CoreGraphics
 import Foundation
 import os
 
-nonisolated private let logger = Logger(subsystem: "com.apoorvdarshan.calorietracker", category: "CameraFocus")
+nonisolated private let logger = Logger(subsystem: "kz.kudabay.tamaq", category: "CameraFocus")
 
 /// Where a camera focuses. Like the system camera it starts with continuous autofocus
 /// and exposure at the centre, and a tap focuses and exposes once at that point and

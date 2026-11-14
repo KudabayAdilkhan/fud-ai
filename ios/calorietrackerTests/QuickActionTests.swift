@@ -30,7 +30,7 @@ struct QuickActionTests {
     @Test func shortcutTypesMapOnlyToTheThreeSupportedSlots() {
         #expect(QuickActionCoordinator.slot(forShortcutType: QuickActionCoordinator.shortcutType(for: 0)) == 0)
         #expect(QuickActionCoordinator.slot(forShortcutType: QuickActionCoordinator.shortcutType(for: 2)) == 2)
-        #expect(QuickActionCoordinator.slot(forShortcutType: "com.apoorvdarshan.calorietracker.quickAction.4") == nil)
+        #expect(QuickActionCoordinator.slot(forShortcutType: "kz.kudabay.tamaq.quickAction.4") == nil)
         #expect(QuickActionCoordinator.slot(forShortcutType: "unrelated") == nil)
     }
 }

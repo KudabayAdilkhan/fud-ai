@@ -73,8 +73,8 @@ struct WidgetSnapshot: Codable, Equatable {
     /// views convert for display. Nil in snapshots from older builds (kcal).
     var energyUnitRaw: String? = nil
 
-    private static let productionAppGroupID = "group.com.apoorvdarshan.calorietracker"
-    private static let debugAppGroupID = "group.com.apoorvdarshan.calorietracker.debug"
+    private static let productionAppGroupID = "group.kz.kudabay.tamaq"
+    private static let debugAppGroupID = "group.kz.kudabay.tamaq.debug"
     private static let key = "widget_snapshot_v1"
     private static let fileName = "widget_snapshot_v1.json"
 

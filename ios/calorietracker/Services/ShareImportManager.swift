@@ -4,14 +4,14 @@ import UIKit
 public struct ShareImportManager {
     public static var appGroupID: String {
         Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String
-            ?? "group.com.apoorvdarshan.calorietracker"
+            ?? "group.kz.kudabay.tamaq"
     }
     
     /// File URL for the shared image. Defaults to a file in the App Group container.
     /// Override in tests to use a temp directory.
     public static var sharedImportURL: URL? = {
         let groupID = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String
-            ?? "group.com.apoorvdarshan.calorietracker"
+            ?? "group.kz.kudabay.tamaq"
         return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID)?
             .appendingPathComponent("shared_import.jpg")
     }()

@@ -4,7 +4,7 @@ import SwiftUI
 import UIKit
 import os
 
-nonisolated private let logger = Logger(subsystem: "com.apoorvdarshan.calorietracker", category: "FoodCamera")
+nonisolated private let logger = Logger(subsystem: "kz.kudabay.tamaq", category: "FoodCamera")
 
 // MARK: - SwiftUI
 
@@ -494,7 +494,7 @@ nonisolated final class FoodPhotoCapture: NSObject, @unchecked Sendable {
 
     let session = AVCaptureSession()
 
-    private let queue = DispatchQueue(label: "com.apoorvdarshan.calorietracker.foodcamera")
+    private let queue = DispatchQueue(label: "kz.kudabay.tamaq.foodcamera")
     private let photoOutput = AVCapturePhotoOutput()
     private let lock = NSLock()
     /// Guarded by `lock`. Grows with every start and stop, so a start that finishes
